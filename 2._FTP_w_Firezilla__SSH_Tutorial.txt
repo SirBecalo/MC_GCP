@@ -1,0 +1,40 @@
+My Host: sftp://34.86.112.185
+My Username / key comment: rsa-key-20220531
+My password -/- none
+My SSH Key: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCNV1pajQhYlS3xKvYDn4AH6xQdISrDiQefDCGwEF1aKajK7bB45J1C5GEaDgth82zig2iitKuzPX+QYReM5VE7pX+NhvgnD4QBurwm9K9kURAU+OFR/JwdefC1r69wSqVmISyZwpX9dGPXxay7/pVFJcyi/qRlceJgTOGJmQDPJWcgDhvt4NtIgxHKS/YF6zG2tTzqWh/6li0ZGBDaHV3wT7vD+vprL9mYbszR4xptKcasBmsegBuIAXYAlH+YtEK/ewUITQk2OB8FCuG/ZMx9EfdnuPGKF+Ov84oiKqCT5P+le0Zee+QyM4+8mLpYNTX81iPC0iqFtiOaPZr7E0Yp rsa-key-20220531
+
+
+# If you have already created SSH keys before or did this thing before, skip to "SSH & FTP Connecting with Existing Keys"
+===========================[SSH Key Generation & FTP Connecting 1st time]===========================
+00. Video Reference: https://www.youtube.com/watch?v=wDcjM7BySo0&ab_channel=OnePageZen
+00. Download FileZilla & PuTTy (filezilla-project.org & putty.org)
+1. Open PuTTy Key Generator (PuTTy will download multiple applications so pic this one specifically.)
+2. Generate your PuTTY key (click generate a public/private key pair)
+3. Highlight and copy the generated Public Key for OpenSSH, as well as your Key comment. Paste them in a notepad somewhere.
+3.5. click Save private key (do not protect with passphrase coz that's wack. It's optional.)
+# You definately wanna save this somewhere where it's not gonna move a lot. Saves you a hassle in the future with things like FileZilla.
+4. Open Google Cloud -> Compute Engine -> Metadata -> SSH Keys: add your SSH key. (KEY not fingerprint or smthn)
+5. Go and copy your VM's External IP Adresss
+6. Go to FileZilla(or whatever your ftp thingy is) > Edit > Settings > SFTP > Add your key file that you saved (private key) and click OK
+7. In the Host of FileZilla write "sftp://" then paste your VM External IP Adress.
+8. For username write you PuTTY "Key Comment" Thingy.
+9. Leave Password empty. If the next step doesn't work try entering in the Password section whatever you entered as your passphrase if you did one.
+10. Hit Quickconnect and enjoy.
+===========================[SSH & FTP Connecting with Existing Keys]===========================
+1. Google Cloud Platform -> Compute Engine -> Metadata -> SSH Keys: add your SSH key that you coppied, then hit Save. (KEY not fingerprint or smthn)
+2. Go to FileZilla(or whatever your ftp thingy is) > Edit > Settings > SFTP > Add your key file that you saved (private key) and click OK
+3. In the Host of FileZilla write "sftp://" then put your VM's External IP Adress.
+4. For username write you PuTTY "Key Comment" Thingy.
+# Leave Password empty. If the next step doesn't work try entering in the Password section whatever you entered as your passphrase if you did one.
+5. Hit Quickconnect and enjoy.
+
+===========================[Permission Denied for Edit and stuff]===========================
+#Note: Most following steps require sudo perm. If you are already the sudo user then no need. If you are not, try putting sudo before each of these commands.
+-Go to your Ubuntu Home directory (or like the place you see the moment you open your SSH Portal)
+-type: stat -c "%a %n" *
+-This will show you the levels of permission for each file/folder/directory in that place. you can see the permision level for a specific file by typing it's
+	name instead of the *
+-If your files are 644 or 755 or smthn less than 777 then FileZila probably cannot acccess it and needs more permission.
+-To set a file as 777, enter this command: "chmod 777 *" or "chmod 777 <Filename/Directory>"
+#Note: 777 Is the highest level of permission a file can have. Dangerous if you have a project with multiple Admins. If it's only you no problem, but good practice
+to nerf the permission level after you are done with your SSH FTP stuff.

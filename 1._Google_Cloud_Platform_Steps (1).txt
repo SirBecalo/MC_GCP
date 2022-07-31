@@ -1,0 +1,61 @@
+Video Reference: https://www.youtube.com/watch?v=So9N-Eof8To&list=PLAYNqzUwzZa0-ApY_2wS8tt9tkzJ4_Sop&index=22&t=524s&ab_channel=UnchallengedGaming
+
+- Make a new gmail alt. (US REGION!!)
+
+Google Cloud Steps:
+- Signup free trial to Google Cloud Platform (and cancel it before the 3 months expire)
+- Create a new project if there isn't an existing one. (In 2022 "My Project" is auto created and it's fine to continue with that.)
+#Pins: Compute Engine, VPC Network, SQL, Billing
+
+
+Create VM Instance:
+- Go into Compute Engine -> VM instances: Enable Compute Enigne API (Takes a minute or two. Do not change page.)
+Name: minecraft-server
+Region: us-east4 (Northern Virgina for closest to PSU & Egypt)
+Zone: -/- (put anything lmao. I typically go with us-east4-b) <!>For future click the [?] next to zone and double check the availability of E2 machine type.
+Machine Family: General Purpose
+Series: E2
+Machine Type: e2-standard-4 (4 vCPU & 16GB Memory) <!> in older versions instead of standard it was called medum
+Boot Disk: Change -> Ubuntu : Ubuntu 20.04 LTS : Standard Persistant Disk (HDD) : Size 30GB
+Firewall: Allow HTTP traffic & Allow HTTPS traffic
+NETWORKING, DISKS, SECUIRTY, MANAGEMENT, SOLE-TENANCY -> Networking -> Network tags: minecraft
+create VM.
+
+Initial Ubunutu Steps:
+Open an SSH/Shell and run: sudo apt update && sudo apt -y upgrade
+hit yes to all then
+run exit.
+
+Firewall Rules:
+Click "Setup Firewall Rules" from the VM instance's "Related actions" or GCP -> VPC network -> Firewall
+Create Firewall Rule
+Name: minecraft-rule
+Target tags: minecraft (same as the tag assigned to the VM when it was created)
+Source IP ranges/ Source IPv4 ranges: 0.0.0.0/0 (all)
+Protocole and ports : Specified protocoles and ports: TCP: 25565 & UDP: 19132 (tcp 25565 for Java, UDP 19132 for Bedrock)
+create.
+
+Reserve Static External IP:
+#Make sure VM is running
+VPC network : IP addresses
+Find the EXTERNAL ip for your vm.
+Click "RESERVE" (If you don't see it, scroll horizontaly or hide info panel on the right)
+give it a name like "static-ip"
+Reserve.
+#Prolly best to restart ur VM and make sure the external IP remains.
+
+Obtain a Domain:
+go to http://freedns.afraid.org/subdomain/
+make an account if you don't already.
+Click on Registry to search for some domain that you like and obtain a subdomain for it. (minecraft.pe is a nice one.)
+click on the domain you like
+Keep type as A
+enter your subdomain. structure will become: <subdomain>.domain.extention
+set Destination as your VM's Static External IP.
+Hit Save!
+#Takes a couple minutes to apply. Might take up to like an hour or two max. 1 minute min.
+
+
+#You have officially completed all External VM related tasks! Head now to the other document to complete your MC server setup.
+# Go to "2. FTP w Firezilla & SSH Tutorial" to setup a method for you to access your VM withot the GCP SSH from anywhere using FileZilla!
+# Go to "3. GCP Ubuntu Minecraft Server Installation" to continue on with setting up your Minecraft Server or Server Network!
